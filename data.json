@@ -1,0 +1,74 @@
+{
+  "_meta": {
+    "note": "This file is refreshed by pg-dashboard-sync.py every 6 hours from the Google Sheet (ID: 1_vOhCIwvLmAWUrBHGwILoXFKaxg23d4zUA4MSvwGWqU). The data below is sample/demo data for dashboard visualization purposes until real signups begin.",
+    "last_synced": "2026-03-22T21:00:00-06:00",
+    "source": "Google Sheets → Notion sync",
+    "is_sample_data": true
+  },
+  "waitlist": {
+    "kpis": {
+      "total_signups": 27,
+      "active": 25,
+      "converted": 0,
+      "this_week": 8,
+      "signup_rate": 3.2
+    },
+    "daily_signups": [
+      { "date": "2026-03-08", "count": 1 },
+      { "date": "2026-03-09", "count": 2 },
+      { "date": "2026-03-10", "count": 3 },
+      { "date": "2026-03-11", "count": 1 },
+      { "date": "2026-03-12", "count": 0 },
+      { "date": "2026-03-13", "count": 2 },
+      { "date": "2026-03-14", "count": 3 },
+      { "date": "2026-03-15", "count": 1 },
+      { "date": "2026-03-16", "count": 4 },
+      { "date": "2026-03-17", "count": 2 },
+      { "date": "2026-03-18", "count": 1 },
+      { "date": "2026-03-19", "count": 3 },
+      { "date": "2026-03-20", "count": 2 },
+      { "date": "2026-03-21", "count": 1 },
+      { "date": "2026-03-22", "count": 1 }
+    ],
+    "sources": {
+      "Coming Soon Page": 16,
+      "Social": 6,
+      "Referral": 3,
+      "Shopify": 2
+    },
+    "subscribers": [
+      { "id": "WL-001", "name": "Alex M.", "email": "alex.m@example.com", "source": "Coming Soon Page", "status": "Active", "signed_up": "2026-03-08T10:23:00Z" },
+      { "id": "WL-002", "name": "Jordan K.", "email": "jordan.k@example.com", "source": "Coming Soon Page", "status": "Active", "signed_up": "2026-03-09T14:11:00Z" },
+      { "id": "WL-003", "name": "Sam R.", "email": "sam.r@example.com", "source": "Social", "status": "Active", "signed_up": "2026-03-09T18:45:00Z" },
+      { "id": "WL-004", "name": "Chris T.", "email": "chris.t@example.com", "source": "Coming Soon Page", "status": "Active", "signed_up": "2026-03-10T09:30:00Z" },
+      { "id": "WL-005", "name": "Morgan L.", "email": "morgan.l@example.com", "source": "Social", "status": "Active", "signed_up": "2026-03-10T11:05:00Z" },
+      { "id": "WL-006", "name": "Taylor W.", "email": "taylor.w@example.com", "source": "Coming Soon Page", "status": "Active", "signed_up": "2026-03-10T16:22:00Z" },
+      { "id": "WL-007", "name": "Casey B.", "email": "casey.b@example.com", "source": "Referral", "status": "Active", "signed_up": "2026-03-11T08:15:00Z" },
+      { "id": "WL-008", "name": "Riley D.", "email": "riley.d@example.com", "source": "Coming Soon Page", "status": "Active", "signed_up": "2026-03-13T10:40:00Z" },
+      { "id": "WL-009", "name": "Quinn H.", "email": "quinn.h@example.com", "source": "Social", "status": "Active", "signed_up": "2026-03-13T15:33:00Z" },
+      { "id": "WL-010", "name": "Drew P.", "email": "drew.p@example.com", "source": "Coming Soon Page", "status": "Active", "signed_up": "2026-03-14T09:12:00Z" },
+      { "id": "WL-011", "name": "Avery N.", "email": "avery.n@example.com", "source": "Coming Soon Page", "status": "Active", "signed_up": "2026-03-14T12:28:00Z" },
+      { "id": "WL-012", "name": "Jamie F.", "email": "jamie.f@example.com", "source": "Shopify", "status": "Active", "signed_up": "2026-03-14T17:55:00Z" },
+      { "id": "WL-013", "name": "Skyler G.", "email": "skyler.g@example.com", "source": "Coming Soon Page", "status": "Active", "signed_up": "2026-03-15T11:03:00Z" },
+      { "id": "WL-014", "name": "Reese C.", "email": "reese.c@example.com", "source": "Social", "status": "Active", "signed_up": "2026-03-16T08:47:00Z" },
+      { "id": "WL-015", "name": "Parker J.", "email": "parker.j@example.com", "source": "Coming Soon Page", "status": "Active", "signed_up": "2026-03-16T10:15:00Z" },
+      { "id": "WL-016", "name": "Emery V.", "email": "emery.v@example.com", "source": "Referral", "status": "Active", "signed_up": "2026-03-16T14:30:00Z" },
+      { "id": "WL-017", "name": "Dakota S.", "email": "dakota.s@example.com", "source": "Coming Soon Page", "status": "Active", "signed_up": "2026-03-16T19:22:00Z" },
+      { "id": "WL-018", "name": "Finley A.", "email": "finley.a@example.com", "source": "Coming Soon Page", "status": "Active", "signed_up": "2026-03-17T09:50:00Z" },
+      { "id": "WL-019", "name": "Hayden E.", "email": "hayden.e@example.com", "source": "Social", "status": "Active", "signed_up": "2026-03-17T13:18:00Z" },
+      { "id": "WL-020", "name": "Blake O.", "email": "blake.o@example.com", "source": "Coming Soon Page", "status": "Inactive", "signed_up": "2026-03-18T07:33:00Z" },
+      { "id": "WL-021", "name": "Rowan I.", "email": "rowan.i@example.com", "source": "Coming Soon Page", "status": "Active", "signed_up": "2026-03-19T11:45:00Z" },
+      { "id": "WL-022", "name": "Ellis U.", "email": "ellis.u@example.com", "source": "Shopify", "status": "Active", "signed_up": "2026-03-19T15:10:00Z" },
+      { "id": "WL-023", "name": "Sage Y.", "email": "sage.y@example.com", "source": "Referral", "status": "Active", "signed_up": "2026-03-19T18:02:00Z" },
+      { "id": "WL-024", "name": "Lennox Q.", "email": "lennox.q@example.com", "source": "Coming Soon Page", "status": "Active", "signed_up": "2026-03-20T10:28:00Z" },
+      { "id": "WL-025", "name": "Harley Z.", "email": "harley.z@example.com", "source": "Social", "status": "Inactive", "signed_up": "2026-03-20T14:55:00Z" },
+      { "id": "WL-026", "name": "Peyton X.", "email": "peyton.x@example.com", "source": "Coming Soon Page", "status": "Active", "signed_up": "2026-03-21T09:17:00Z" },
+      { "id": "WL-027", "name": "River M.", "email": "river.m@example.com", "source": "Coming Soon Page", "status": "Active", "signed_up": "2026-03-22T08:40:00Z" }
+    ]
+  },
+  "sales": null,
+  "products": null,
+  "customers": null,
+  "marketing": null,
+  "inventory": null
+}

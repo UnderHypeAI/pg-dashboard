@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+   ______                            __
+  / ____/___  ____ ___  ____  __  __/ /____  _____
+ / /   / __ \/ __ `__ \/ __ \/ / / / __/ _ \/ ___/
+/ /___/ /_/ / / / / / / /_/ / /_/ / /_/  __/ /
+\____/\____/_/ /_/ /_/ .___/\__,_/\__/\___/_/
+                    /_/
+        Created with Perplexity Computer
+        https://www.perplexity.ai/computer
+-->
+
+<!-- Perplexity Computer Attribution — SEO Meta Tags -->
+<meta name="generator" content="Perplexity Computer">
+<meta name="author" content="Perplexity Computer">
+<meta property="og:see_also" content="https://www.perplexity.ai/computer">
+<link rel="author" href="https://www.perplexity.ai/computer">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Gangster — E-Commerce Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─── Reset & Base ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0f0e0c;
+  --card: #1a1918;
+  --card-border: #2a2826;
+  --accent: #F7931A;
+  --accent-dim: rgba(247, 147, 26, 0.15);
+  --accent-glow: rgba(247, 147, 26, 0.08);
+  --text-primary: #e8e4df;
+  --text-secondary: #9a9590;
+  --text-muted: #6b6560;
+  --green: #34d399;
+  --green-dim: rgba(52, 211, 153, 0.15);
+  --red: #f87171;
+  --amber: #fbbf24;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font-body: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+}
+
+html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ─── Layout Shell ─── */
+.dashboard {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+@media (max-width: 768px) {
+  .dashboard { padding: 20px 16px 48px; }
+}
+
+/* ─── Animations ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 0.6s ease-out forwards;
+}
+.fade-up:nth-child(1) { animation-delay: 0.05s; }
+.fade-up:nth-child(2) { animation-delay: 0.1s; }
+.fade-up:nth-child(3) { animation-delay: 0.15s; }
+.fade-up:nth-child(4) { animation-delay: 0.2s; }
+.fade-up:nth-child(5) { animation-delay: 0.25s; }
+.fade-up:nth-child(6) { animation-delay: 0.3s; }
+.fade-up:nth-child(7) { animation-delay: 0.35s; }
+.fade-up:nth-child(8) { animation-delay: 0.4s; }
+.fade-up:nth-child(9) { animation-delay: 0.45s; }
+.fade-up:nth-child(10) { animation-delay: 0.5s; }
+
+/* ─── Header ─── */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.header-left h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+.header-left .subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  font-weight: 400;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.sync-badge {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  padding: 6px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.sync-badge .dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.sample-badge {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  background: var(--accent-dim);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(247, 147, 26, 0.25);
+}
+
+/* ─── Section Titles ─── */
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+.section-title .section-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  background: var(--accent-dim);
+  border-radius: 8px;
+  margin-right: 10px;
+  vertical-align: middle;
+  font-size: 0.875rem;
+}
+
+/* ─── KPI Cards ─── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+@media (max-width: 900px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+}
+
+.kpi-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.kpi-card:hover {
+  border-color: rgba(247, 147, 26, 0.3);
+  box-shadow: 0 0 20px rgba(247, 147, 26, 0.05);
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  opacity: 0.5;
+}
+.kpi-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.kpi-value {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.kpi-sub {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+.kpi-sub .up { color: var(--green); font-weight: 600; }
+.kpi-sub .down { color: var(--red); font-weight: 600; }
+
+/* ─── Chart Cards ─── */
+.chart-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.chart-card .chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.chart-card .chart-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.chart-card .chart-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.chart-container {
+  position: relative;
+  width: 100%;
+}
+.chart-container.line-chart { height: 300px; padding-right: 12px; }
+.chart-container.donut-chart {
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 768px) {
+  .chart-container.line-chart { height: 220px; }
+  .chart-container.donut-chart { height: 240px; }
+}
+
+/* ─── Donut Layout ─── */
+.donut-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: center;
+}
+@media (max-width: 600px) {
+  .donut-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+.donut-canvas-wrap {
+  position: relative;
+  max-width: 240px;
+  margin: 0 auto;
+}
+.donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.legend-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  flex: 1;
+}
+.legend-value {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.legend-pct {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  width: 42px;
+  text-align: right;
+}
+
+/* ─── Table ─── */
+.table-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+.table-card .table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.table-card .table-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.table-card .table-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+thead th {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-align: left;
+  padding: 0 12px 12px;
+  border-bottom: 1px solid var(--card-border);
+  white-space: nowrap;
+}
+tbody td {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  padding: 12px;
+  border-bottom: 1px solid rgba(42, 40, 38, 0.5);
+  white-space: nowrap;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { color: var(--text-primary); }
+tbody tr { transition: all 0.15s ease; }
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.status-badge.active {
+  color: var(--green);
+  background: var(--green-dim);
+}
+.status-badge.inactive {
+  color: var(--text-muted);
+  background: rgba(107, 101, 96, 0.15);
+}
+.status-badge .status-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ─── Placeholder Sections ─── */
+.placeholder-section {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.placeholder-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.placeholder-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  flex-shrink: 0;
+}
+.placeholder-icon.shopify { background: rgba(149, 191, 71, 0.12); color: #95bf47; }
+.placeholder-icon.analytics { background: rgba(66, 133, 244, 0.12); color: #4285f4; }
+.placeholder-icon.finance { background: rgba(52, 211, 153, 0.12); color: #34d399; }
+
+.placeholder-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.placeholder-awaiting {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.placeholder-desc {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+/* Placeholder KPI cards with dashed borders */
+.placeholder-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+@media (max-width: 900px) {
+  .placeholder-kpis { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .placeholder-kpis { grid-template-columns: 1fr; }
+}
+.placeholder-kpi {
+  border: 1.5px dashed rgba(107, 101, 96, 0.35);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  background: rgba(26, 25, 24, 0.4);
+}
+.placeholder-kpi-label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.placeholder-kpi-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: rgba(107, 101, 96, 0.5);
+}
+
+/* Placeholder chart areas */
+.placeholder-charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 768px) {
+  .placeholder-charts { grid-template-columns: 1fr; }
+}
+.placeholder-chart-area {
+  border: 1.5px dashed rgba(107, 101, 96, 0.35);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  height: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(26, 25, 24, 0.4);
+}
+.placeholder-chart-icon {
+  font-size: 1.5rem;
+  opacity: 0.3;
+}
+.placeholder-chart-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* Simple placeholder (no charts preview) */
+.placeholder-simple {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0 0;
+}
+.placeholder-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.placeholder-feature {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: rgba(107, 101, 96, 0.1);
+  border: 1px solid rgba(107, 101, 96, 0.15);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* ─── Footer ─── */
+.footer {
+  text-align: center;
+  padding: 40px 0 0;
+  border-top: 1px solid var(--card-border);
+  margin-top: 16px;
+}
+.footer a {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.footer a:hover {
+  color: var(--accent);
+}
+
+/* ─── Divider ─── */
+.section-divider {
+  height: 1px;
+  background: var(--card-border);
+  margin: 8px 0 32px;
+  opacity: 0.5;
+}
+
+/* ─── Source Badge on Table ─── */
+.source-badge {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.source-badge.coming-soon { background: var(--accent-dim); color: var(--accent); }
+.source-badge.social { background: rgba(66, 133, 244, 0.12); color: #6fa8f5; }
+.source-badge.referral { background: rgba(52, 211, 153, 0.12); color: var(--green); }
+.source-badge.shopify { background: rgba(149, 191, 71, 0.12); color: #95bf47; }
+</style>
+</head>
+<body>
+
+<div class="dashboard" id="app">
+  <!-- Header -->
+  <header class="header fade-up">
+    <div class="header-left">
+      <h1>Patient Gangster</h1>
+      <div class="subtitle">E-Commerce Dashboard</div>
+    </div>
+    <div class="header-right">
+      <span class="sample-badge" id="sampleBadge" style="display:none;">Sample Data</span>
+      <span class="sync-badge"><span class="dot"></span><span id="syncTime">—</span></span>
+    </div>
+  </header>
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid" id="kpiGrid">
+    <div class="kpi-card fade-up">
+      <div class="kpi-label">Waitlist Total</div>
+      <div class="kpi-value" id="kpiTotal">—</div>
+      <div class="kpi-sub">All-time signups</div>
+    </div>
+    <div class="kpi-card fade-up">
+      <div class="kpi-label">Active Subscribers</div>
+      <div class="kpi-value" id="kpiActive">—</div>
+      <div class="kpi-sub" id="kpiActiveRate"></div>
+    </div>
+    <div class="kpi-card fade-up">
+      <div class="kpi-label">New This Week</div>
+      <div class="kpi-value" id="kpiWeek">—</div>
+      <div class="kpi-sub" id="kpiWeekRate"></div>
+    </div>
+    <div class="kpi-card fade-up">
+      <div class="kpi-label">Conversion Rate</div>
+      <div class="kpi-value" id="kpiConversion">—</div>
+      <div class="kpi-sub">Waitlist → Customer</div>
+    </div>
+  </div>
+
+  <!-- Waitlist Growth Chart -->
+  <div class="chart-card fade-up">
+    <div class="chart-header">
+      <div>
+        <div class="chart-title">Waitlist Growth</div>
+        <div class="chart-subtitle">Daily signups &amp; cumulative total</div>
+      </div>
+    </div>
+    <div class="chart-container line-chart">
+      <canvas id="growthChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Signup Sources -->
+  <div class="chart-card fade-up">
+    <div class="chart-header">
+      <div>
+        <div class="chart-title">Signup Sources</div>
+        <div class="chart-subtitle">Where subscribers are coming from</div>
+      </div>
+    </div>
+    <div class="donut-layout">
+      <div class="donut-canvas-wrap">
+        <canvas id="sourcesChart"></canvas>
+      </div>
+      <div class="donut-legend" id="sourcesLegend"></div>
+    </div>
+  </div>
+
+  <!-- Recent Subscribers Table -->
+  <div class="table-card fade-up">
+    <div class="table-header">
+      <div class="table-title">Recent Subscribers</div>
+      <div class="table-count" id="tableCount"></div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Source</th>
+          <th>Status</th>
+          <th>Signed Up</th>
+        </tr>
+      </thead>
+      <tbody id="subscriberTable"></tbody>
+    </table>
+  </div>
+
+  <div class="section-divider fade-up"></div>
+
+  <!-- Orders & Revenue Placeholder -->
+  <div class="placeholder-section fade-up">
+    <div class="placeholder-header">
+      <div class="placeholder-icon shopify">
+        <svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M15.5 4.5C15.47 4.32 15.31 4.21 15.18 4.2C15.05 4.19 12.66 4.01 12.66 4.01C12.66 4.01 10.88 2.25 10.7 2.07C10.52 1.89 10.17 1.95 10.03 1.99L9.26 2.23C9.14 1.85 8.94 1.42 8.63 1C7.82 0.01 6.71 0 6.39 0C6.37 0 6.35 0 6.33 0C6.17 0 5.24 0.78 4.56 2.18C4.08 3.16 3.73 4.39 3.61 5.3L1.59 5.93C1.05 6.1 1.03 6.12 0.97 6.63L0 14.5L11.36 16.85L17 15.32C17 15.32 15.53 4.68 15.5 4.5Z" fill="currentColor"/></svg>
+      </div>
+      <div>
+        <div class="placeholder-title">Orders &amp; Revenue</div>
+        <div class="placeholder-awaiting">Awaiting Shopify Connection</div>
+      </div>
+    </div>
+    <div class="placeholder-desc">Orders, revenue, AOV, and conversion data will populate once Shopify is connected.</div>
+    <div class="placeholder-kpis">
+      <div class="placeholder-kpi">
+        <div class="placeholder-kpi-label">Total Orders</div>
+        <div class="placeholder-kpi-value">—</div>
+      </div>
+      <div class="placeholder-kpi">
+        <div class="placeholder-kpi-label">Revenue</div>
+        <div class="placeholder-kpi-value">$—</div>
+      </div>
+      <div class="placeholder-kpi">
+        <div class="placeholder-kpi-label">Avg Order Value</div>
+        <div class="placeholder-kpi-value">$—</div>
+      </div>
+      <div class="placeholder-kpi">
+        <div class="placeholder-kpi-label">Conversion Rate</div>
+        <div class="placeholder-kpi-value">—%</div>
+      </div>
+    </div>
+    <div class="placeholder-charts">
+      <div class="placeholder-chart-area">
+        <div class="placeholder-chart-icon">📈</div>
+        <div class="placeholder-chart-label">Revenue Over Time</div>
+      </div>
+      <div class="placeholder-chart-area">
+        <div class="placeholder-chart-icon">📊</div>
+        <div class="placeholder-chart-label">Orders Over Time</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Products Placeholder -->
+  <div class="placeholder-section fade-up">
+    <div class="placeholder-header">
+      <div class="placeholder-icon shopify">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div>
+        <div class="placeholder-title">Top Products</div>
+        <div class="placeholder-awaiting">Awaiting Shopify Connection</div>
+      </div>
+    </div>
+    <div class="placeholder-desc">Best sellers, units sold, and revenue per product will appear here.</div>
+    <div class="placeholder-features">
+      <span class="placeholder-feature">Best Sellers</span>
+      <span class="placeholder-feature">Units Sold</span>
+      <span class="placeholder-feature">Revenue by SKU</span>
+      <span class="placeholder-feature">Product Performance</span>
+    </div>
+  </div>
+
+  <!-- Inventory Placeholder -->
+  <div class="placeholder-section fade-up">
+    <div class="placeholder-header">
+      <div class="placeholder-icon shopify">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 4v9a1 1 0 001 1h10a1 1 0 001-1V4M2 4L4 1h8l2 3M6 7h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <div class="placeholder-title">Inventory</div>
+        <div class="placeholder-awaiting">Awaiting Shopify Connection</div>
+      </div>
+    </div>
+    <div class="placeholder-desc">Stock levels, low-stock alerts, and reorder points will appear here.</div>
+    <div class="placeholder-features">
+      <span class="placeholder-feature">Stock Levels</span>
+      <span class="placeholder-feature">Low-Stock Alerts</span>
+      <span class="placeholder-feature">Reorder Points</span>
+      <span class="placeholder-feature">Variant Tracking</span>
+    </div>
+  </div>
+
+  <!-- Website Traffic Placeholder -->
+  <div class="placeholder-section fade-up">
+    <div class="placeholder-header">
+      <div class="placeholder-icon analytics">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 14L5.5 8.5L8.5 11L15 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 3h4v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <div class="placeholder-title">Website Traffic</div>
+        <div class="placeholder-awaiting">Awaiting GA4 Connection</div>
+      </div>
+    </div>
+    <div class="placeholder-desc">Sessions, users, pageviews, and top landing pages will appear here.</div>
+    <div class="placeholder-features">
+      <span class="placeholder-feature">Sessions</span>
+      <span class="placeholder-feature">Users</span>
+      <span class="placeholder-feature">Pageviews</span>
+      <span class="placeholder-feature">Top Pages</span>
+      <span class="placeholder-feature">Bounce Rate</span>
+    </div>
+  </div>
+
+  <!-- Financial Overview Placeholder -->
+  <div class="placeholder-section fade-up">
+    <div class="placeholder-header">
+      <div class="placeholder-icon finance">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 4v8M6 5.5h3a1.5 1.5 0 010 3H5.5M6 8.5h3.5a1.5 1.5 0 010 3H6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </div>
+      <div>
+        <div class="placeholder-title">Financial Overview</div>
+        <div class="placeholder-awaiting">Awaiting Mercury + QuickBooks Connection</div>
+      </div>
+    </div>
+    <div class="placeholder-desc">Account balances, P&amp;L, margins, and cash flow will appear here.</div>
+    <div class="placeholder-features">
+      <span class="placeholder-feature">Bank Balances</span>
+      <span class="placeholder-feature">P&amp;L Summary</span>
+      <span class="placeholder-feature">Gross Margins</span>
+      <span class="placeholder-feature">Cash Flow</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer fade-up">
+    <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
+  </footer>
+</div>
+
+<script>
+(async function() {
+  // ─── Load Data ───
+  let data;
+  try {
+    const resp = await fetch('data.json');
+    data = await resp.json();
+  } catch(e) {
+    console.error('Failed to load data.json', e);
+    return;
+  }
+
+  const meta = data._meta;
+  const wl = data.waitlist;
+
+  // ─── Header ───
+  if (meta.is_sample_data) {
+    document.getElementById('sampleBadge').style.display = 'inline-block';
+  }
+
+  // Format sync time
+  if (meta.last_synced) {
+    const d = new Date(meta.last_synced);
+    const now = new Date();
+    const diffMs = now - d;
+    const diffHrs = Math.floor(diffMs / 3600000);
+    const diffMins = Math.floor((diffMs % 3600000) / 60000);
+    let timeAgo;
+    if (diffHrs > 24) {
+      timeAgo = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    } else if (diffHrs > 0) {
+      timeAgo = `${diffHrs}h ${diffMins}m ago`;
+    } else {
+      timeAgo = `${diffMins}m ago`;
+    }
+    document.getElementById('syncTime').textContent = `Synced ${timeAgo}`;
+  }
+
+  // ─── KPI Cards ───
+  if (wl && wl.kpis) {
+    document.getElementById('kpiTotal').textContent = wl.kpis.total_signups.toLocaleString();
+    document.getElementById('kpiActive').textContent = wl.kpis.active.toLocaleString();
+    const activeRate = wl.kpis.total_signups > 0 ? ((wl.kpis.active / wl.kpis.total_signups) * 100).toFixed(0) : 0;
+    document.getElementById('kpiActiveRate').innerHTML = `<span class="up">${activeRate}%</span> retention rate`;
+    document.getElementById('kpiWeek').textContent = wl.kpis.this_week.toLocaleString();
+    document.getElementById('kpiWeekRate').innerHTML = `<span class="up">${wl.kpis.signup_rate}</span> avg/day`;
+
+    if (wl.kpis.converted > 0 && wl.kpis.total_signups > 0) {
+      const convRate = ((wl.kpis.converted / wl.kpis.total_signups) * 100).toFixed(1);
+      document.getElementById('kpiConversion').textContent = convRate + '%';
+    } else {
+      document.getElementById('kpiConversion').textContent = '—';
+    }
+  }
+
+  // ─── Waitlist Growth Chart ───
+  if (wl && wl.daily_signups && wl.daily_signups.length > 0) {
+    const labels = wl.daily_signups.map(d => {
+      const dt = new Date(d.date + 'T00:00:00');
+      return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    });
+    const dailyCounts = wl.daily_signups.map(d => d.count);
+
+    // Compute cumulative
+    let cum = 0;
+    const cumulative = dailyCounts.map(c => { cum += c; return cum; });
+
+    const ctx = document.getElementById('growthChart').getContext('2d');
+
+    // Gradient for daily area
+    const gradientDaily = ctx.createLinearGradient(0, 0, 0, 300);
+    gradientDaily.addColorStop(0, 'rgba(247, 147, 26, 0.25)');
+    gradientDaily.addColorStop(1, 'rgba(247, 147, 26, 0.0)');
+
+    // Gradient for cumulative area
+    const gradientCum = ctx.createLinearGradient(0, 0, 0, 300);
+    gradientCum.addColorStop(0, 'rgba(247, 147, 26, 0.08)');
+    gradientCum.addColorStop(1, 'rgba(247, 147, 26, 0.0)');
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Cumulative',
+            data: cumulative,
+            borderColor: 'rgba(247, 147, 26, 0.4)',
+            backgroundColor: gradientCum,
+            fill: true,
+            tension: 0.35,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            pointHoverBackgroundColor: '#F7931A',
+            borderWidth: 1.5,
+            yAxisID: 'y1',
+            order: 2
+          },
+          {
+            label: 'Daily Signups',
+            data: dailyCounts,
+            borderColor: '#F7931A',
+            backgroundColor: gradientDaily,
+            fill: true,
+            tension: 0.35,
+            pointRadius: 3,
+            pointBackgroundColor: '#F7931A',
+            pointBorderColor: '#1a1918',
+            pointBorderWidth: 2,
+            pointHoverRadius: 6,
+            pointHoverBackgroundColor: '#F7931A',
+            borderWidth: 2.5,
+            yAxisID: 'y',
+            order: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            align: 'end',
+            labels: {
+              color: '#9a9590',
+              font: { family: "system-ui, -apple-system, sans-serif", size: 11 },
+              boxWidth: 12,
+              boxHeight: 2,
+              padding: 16,
+              usePointStyle: false
+            }
+          },
+          tooltip: {
+            backgroundColor: '#1a1918',
+            titleColor: '#e8e4df',
+            bodyColor: '#9a9590',
+            borderColor: '#2a2826',
+            borderWidth: 1,
+            padding: 12,
+            cornerRadius: 8,
+            titleFont: { family: "system-ui, -apple-system, sans-serif", size: 12, weight: '600' },
+            bodyFont: { family: "'JetBrains Mono', monospace", size: 12 },
+            displayColors: true,
+            boxWidth: 8,
+            boxHeight: 8,
+            boxPadding: 4
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              color: 'rgba(42, 40, 38, 0.4)',
+              drawTicks: false
+            },
+            ticks: {
+              color: '#6b6560',
+              font: { family: "system-ui, -apple-system, sans-serif", size: 10 },
+              padding: 8,
+              maxRotation: 45,
+              minRotation: 0
+            },
+            border: { display: false }
+          },
+          y: {
+            position: 'left',
+            title: {
+              display: false
+            },
+            grid: {
+              color: 'rgba(42, 40, 38, 0.4)',
+              drawTicks: false
+            },
+            ticks: {
+              color: '#6b6560',
+              font: { family: "'JetBrains Mono', monospace", size: 10 },
+              padding: 8,
+              stepSize: 1
+            },
+            border: { display: false },
+            beginAtZero: true
+          },
+          y1: {
+            position: 'right',
+            title: {
+              display: false
+            },
+            grid: { display: false },
+            ticks: {
+              color: 'rgba(247, 147, 26, 0.5)',
+              font: { family: "'JetBrains Mono', monospace", size: 10 },
+              padding: 8
+            },
+            border: { display: false },
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+
+  // ─── Signup Sources Donut ───
+  if (wl && wl.sources) {
+    const sourceEntries = Object.entries(wl.sources).sort((a, b) => b[1] - a[1]);
+    const sourceLabels = sourceEntries.map(s => s[0]);
+    const sourceValues = sourceEntries.map(s => s[1]);
+    const sourceTotal = sourceValues.reduce((a, b) => a + b, 0);
+
+    const sourceColors = {
+      'Coming Soon Page': '#F7931A',
+      'Social': '#4A90D9',
+      'Referral': '#34d399',
+      'Shopify': '#95bf47'
+    };
+    const defaultColors = ['#F7931A', '#d4a04a', '#9a9590', '#6b6560', '#4A90D9'];
+    const colors = sourceLabels.map((label, i) => sourceColors[label] || defaultColors[i % defaultColors.length]);
+
+    const ctxD = document.getElementById('sourcesChart').getContext('2d');
+    new Chart(ctxD, {
+      type: 'doughnut',
+      data: {
+        labels: sourceLabels,
+        datasets: [{
+          data: sourceValues,
+          backgroundColor: colors,
+          borderColor: '#1a1918',
+          borderWidth: 3,
+          hoverBorderColor: '#1a1918',
+          hoverBorderWidth: 3,
+          hoverOffset: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        cutout: '68%',
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#1a1918',
+            titleColor: '#e8e4df',
+            bodyColor: '#9a9590',
+            borderColor: '#2a2826',
+            borderWidth: 1,
+            padding: 12,
+            cornerRadius: 8,
+            bodyFont: { family: "'JetBrains Mono', monospace", size: 12 },
+            callbacks: {
+              label: function(ctx) {
+                const pct = ((ctx.parsed / sourceTotal) * 100).toFixed(1);
+                return ` ${ctx.label}: ${ctx.parsed} (${pct}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Build legend
+    const legendEl = document.getElementById('sourcesLegend');
+    sourceEntries.forEach(([label, count], i) => {
+      const pct = ((count / sourceTotal) * 100).toFixed(1);
+      const item = document.createElement('div');
+      item.className = 'legend-item';
+      item.innerHTML = `
+        <div class="legend-dot" style="background:${colors[i]}"></div>
+        <div class="legend-label">${label}</div>
+        <div class="legend-value">${count}</div>
+        <div class="legend-pct">${pct}%</div>
+      `;
+      legendEl.appendChild(item);
+    });
+  }
+
+  // ─── Recent Subscribers Table ───
+  if (wl && wl.subscribers && wl.subscribers.length > 0) {
+    const sorted = [...wl.subscribers].sort((a, b) => new Date(b.signed_up) - new Date(a.signed_up));
+    const recent = sorted.slice(0, 10);
+
+    document.getElementById('tableCount').textContent = `Showing ${recent.length} of ${wl.subscribers.length}`;
+
+    const tbody = document.getElementById('subscriberTable');
+    recent.forEach(sub => {
+      const tr = document.createElement('tr');
+      const dt = new Date(sub.signed_up);
+      const dateStr = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const timeStr = dt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+      const statusClass = sub.status === 'Active' ? 'active' : 'inactive';
+
+      // Source badge class
+      let sourceClass = '';
+      if (sub.source === 'Coming Soon Page') sourceClass = 'coming-soon';
+      else if (sub.source === 'Social') sourceClass = 'social';
+      else if (sub.source === 'Referral') sourceClass = 'referral';
+      else if (sub.source === 'Shopify') sourceClass = 'shopify';
+
+      tr.innerHTML = `
+        <td style="color:var(--text-primary); font-weight:500;">${sub.name}</td>
+        <td><span class="source-badge ${sourceClass}">${sub.source}</span></td>
+        <td><span class="status-badge ${statusClass}"><span class="status-dot"></span>${sub.status}</span></td>
+        <td style="font-family:var(--font-mono); font-size:0.8125rem; color:var(--text-muted);">${dateStr}, ${timeStr}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+})();
+</script>
+
+</body>
+</html>
