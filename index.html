@@ -554,18 +554,32 @@ tbody tr { transition: all 0.15s ease; }
   .back-to-master {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     font-size: 13px;
-    color: #888;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    color: var(--text-primary);
     text-decoration: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    transition: color 0.2s, background 0.2s;
-    margin-bottom: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--card-border);
+    background: var(--card);
+    transition: all 0.25s ease;
+    margin-bottom: 12px;
   }
   .back-to-master:hover {
-    color: #fff;
-    background: rgba(255,255,255,0.06);
+    background: var(--card-hover, rgba(255,255,255,0.06));
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateX(-2px);
+  }
+  .back-to-master svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.25s ease;
+  }
+  .back-to-master:hover svg {
+    transform: translateX(-3px);
   }
 
 .footer a:hover {
@@ -646,7 +660,7 @@ tbody tr { transition: all 0.15s ease; }
 
 <div class="dashboard" id="app">
   <!-- Header -->
-  <a href="https://underhypeai.github.io/master-dashboard/" class="back-to-master">← Portfolio Dashboard</a>
+  <a href="https://underhypeai.github.io/master-dashboard/" class="back-to-master"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> Portfolio Dashboard</a>
   <header class="header fade-up">
     <div class="header-left">
       <h1>Patient Gangster</h1>
@@ -857,7 +871,7 @@ tbody tr { transition: all 0.15s ease; }
 
   <!-- Footer -->
   <footer class="footer fade-up">
-    <a href="https://underhypeai.github.io/master-dashboard/" style="margin-right: 1rem;">← Portfolio Dashboard</a>
+    <a href="https://underhypeai.github.io/master-dashboard/" class="back-to-master" style="margin-bottom:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> Portfolio Dashboard</a>
     <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
   </footer>
 </div>
