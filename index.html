@@ -38,7 +38,7 @@
   --accent-glow: rgba(247, 147, 26, 0.08);
   --text-primary: #e8e4df;
   --text-secondary: #9a9590;
-  --text-muted: #6b6560;
+  --text-muted: #8a8580;
   --green: #34d399;
   --green-dim: rgba(52, 211, 153, 0.15);
   --red: #f87171;
@@ -129,7 +129,7 @@ body {
 }
 .sync-badge {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-family: var(--font-mono);
   background: var(--card);
   border: 1px solid var(--card-border);
@@ -180,7 +180,7 @@ body {
 /* ─── KPI Cards ─── */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   margin-bottom: 32px;
 }
@@ -198,6 +198,7 @@ body {
   padding: 20px 24px;
   position: relative;
   overflow: hidden;
+  min-width: 0;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .kpi-card:hover {
@@ -214,19 +215,20 @@ body {
 }
 .kpi-label {
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-bottom: 8px;
 }
 .kpi-value {
   font-size: 2rem;
   font-weight: 700;
   font-family: var(--font-mono);
-  color: var(--text-primary);
+  color: #ffffff;
   line-height: 1.1;
   font-variant-numeric: tabular-nums lining-nums;
+  text-shadow: 0 0 20px rgba(247, 147, 26, 0.15);
 }
 .kpi-sub {
   font-size: 0.75rem;
@@ -257,7 +259,7 @@ body {
 }
 .chart-card .chart-subtitle {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 .chart-container {
   position: relative;
@@ -362,7 +364,7 @@ thead th {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-align: left;
   padding: 0 12px 12px;
   border-bottom: 1px solid var(--card-border);
@@ -439,7 +441,7 @@ tbody tr { transition: all 0.15s ease; }
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--text-muted);
+  color: var(--accent);
   margin-top: 2px;
 }
 .placeholder-desc {
@@ -862,13 +864,13 @@ tbody tr { transition: all 0.15s ease; }
 
     // Gradient for daily area
     const gradientDaily = ctx.createLinearGradient(0, 0, 0, 300);
-    gradientDaily.addColorStop(0, 'rgba(247, 147, 26, 0.25)');
-    gradientDaily.addColorStop(1, 'rgba(247, 147, 26, 0.0)');
+    gradientDaily.addColorStop(0, 'rgba(247, 147, 26, 0.35)');
+    gradientDaily.addColorStop(1, 'rgba(247, 147, 26, 0.02)');
 
     // Gradient for cumulative area
     const gradientCum = ctx.createLinearGradient(0, 0, 0, 300);
-    gradientCum.addColorStop(0, 'rgba(247, 147, 26, 0.08)');
-    gradientCum.addColorStop(1, 'rgba(247, 147, 26, 0.0)');
+    gradientCum.addColorStop(0, 'rgba(212, 160, 74, 0.12)');
+    gradientCum.addColorStop(1, 'rgba(212, 160, 74, 0.0)');
 
     new Chart(ctx, {
       type: 'line',
@@ -878,14 +880,15 @@ tbody tr { transition: all 0.15s ease; }
           {
             label: 'Cumulative',
             data: cumulative,
-            borderColor: 'rgba(247, 147, 26, 0.4)',
+            borderColor: '#d4a04a',
             backgroundColor: gradientCum,
             fill: true,
             tension: 0.35,
             pointRadius: 0,
             pointHoverRadius: 4,
             pointHoverBackgroundColor: '#F7931A',
-            borderWidth: 1.5,
+            borderWidth: 2,
+            borderDash: [6, 3],
             yAxisID: 'y1',
             order: 2
           },
@@ -902,7 +905,7 @@ tbody tr { transition: all 0.15s ease; }
             pointBorderWidth: 2,
             pointHoverRadius: 6,
             pointHoverBackgroundColor: '#F7931A',
-            borderWidth: 2.5,
+            borderWidth: 3,
             yAxisID: 'y',
             order: 1
           }
@@ -948,12 +951,12 @@ tbody tr { transition: all 0.15s ease; }
         scales: {
           x: {
             grid: {
-              color: 'rgba(42, 40, 38, 0.4)',
+              color: 'rgba(255, 255, 255, 0.08)',
               drawTicks: false
             },
             ticks: {
-              color: '#6b6560',
-              font: { family: "system-ui, -apple-system, sans-serif", size: 10 },
+              color: '#9a9590',
+              font: { family: "system-ui, -apple-system, sans-serif", size: 11 },
               padding: 8,
               maxRotation: 45,
               minRotation: 0
@@ -966,12 +969,12 @@ tbody tr { transition: all 0.15s ease; }
               display: false
             },
             grid: {
-              color: 'rgba(42, 40, 38, 0.4)',
+              color: 'rgba(255, 255, 255, 0.08)',
               drawTicks: false
             },
             ticks: {
-              color: '#6b6560',
-              font: { family: "'JetBrains Mono', monospace", size: 10 },
+              color: '#9a9590',
+              font: { family: "'JetBrains Mono', monospace", size: 11 },
               padding: 8,
               stepSize: 1
             },
@@ -985,8 +988,8 @@ tbody tr { transition: all 0.15s ease; }
             },
             grid: { display: false },
             ticks: {
-              color: 'rgba(247, 147, 26, 0.5)',
-              font: { family: "'JetBrains Mono', monospace", size: 10 },
+              color: '#F7931A',
+              font: { family: "'JetBrains Mono', monospace", size: 11 },
               padding: 8
             },
             border: { display: false },
